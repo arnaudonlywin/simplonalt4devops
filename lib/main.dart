@@ -2,6 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttersimplon/pages/home_page.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider;
+import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 
 const firebaseConfig = {};
 
@@ -27,12 +29,32 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      title: 'Messagerie Simplon',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const HomePage(),
+      initialRoute:
+          FirebaseAuth.instance.currentUser == null ? '/sign-in' : '/home',
+      routes: {
+        '/sign-in': (_) {
+          return SignInScreen(
+            providers: [EmailAuthProvider()],
+            actions: [
+              AuthStateChangeAction<SignedIn>((context, state) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (_) => const HomePage()),
+                );
+              }),
+            ],
+          );
+        },
+        HomePage.name: (_) {
+          return const HomePage();
+        },
+      },
     );
   }
 }
