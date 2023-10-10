@@ -1,7 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fluttersimplon/models/conversation.dart';
 
 class ConversationsServices {
-  static Future getAll() {
-    return FirebaseFirestore.instance.collection('conversations').get();
+  static CollectionReference<Conversation> getAll() {
+    final collectionRef =
+        FirebaseFirestore.instance.collection('conversations');
+    return collectionRef.withConverter<Conversation>(
+      fromFirestore: (snapshot, _) => Conversation.fromJson(snapshot.data()!),
+      toFirestore: (conversation, _) => conversation.toJson(),
+    );
   }
 }

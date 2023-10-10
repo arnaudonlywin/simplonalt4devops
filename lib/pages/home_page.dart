@@ -1,7 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttersimplon/models/conversation.dart';
 import 'package:fluttersimplon/services/conversations_service.dart';
 import 'package:fluttersimplon/styles.dart';
+import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -31,35 +32,19 @@ class _HomePageState extends State<HomePage> {
         ),
         backgroundColor: const Color.fromARGB(255, 36, 97, 137),
       ),
-      body: const Center(
-        child: FirebaseMessage(),
+      body: FirestoreListView<Conversation>(
+        query: ConversationsServices.getAll(),
+        padding: const EdgeInsets.all(8.0),
+        itemBuilder: (context, snapshot) {
+          final conversation = snapshot.data();
+          return Column(
+            children: [
+              Text(conversation.from),
+              const Divider(),
+            ],
+          );
+        },
       ),
     );
-  }
-}
-
-class FirebaseMessage extends StatelessWidget {
-  const FirebaseMessage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: ConversationsServices.getAll(),
-      builder: getBuilder,
-    );
-  }
-
-  Widget getBuilder(BuildContext context, AsyncSnapshot snapshot) {
-    if (snapshot.hasError) {
-      return const Text("Quelque chose s'est mal passé");
-    }
-    if (snapshot.hasData && !snapshot.data!.exists) {
-      return const Text("Le document n'existe pas");
-    }
-    if (snapshot.connectionState == ConnectionState.done) {
-      Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
-      return Text(data["title"]);
-    }
-    return const Text("Chargement en cours");
   }
 }
