@@ -1,3 +1,4 @@
+import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttersimplon/colors.dart';
 import 'package:fluttersimplon/models/conversation.dart';
@@ -20,6 +21,33 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _getAppBar(),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: kGrey,
+              ),
+              child: Text('Bienvenue !'),
+            ),
+            ListTile(
+              title: const Text('Compte'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => ProfileScreen(
+                      appBar: _getAppBar(),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
       body: FirestoreListView<Conversation>(
         query: ConversationsServices.getAll().orderBy(
           'createdAt',
@@ -51,7 +79,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   ///Retourne l'app bar de mon application
-  PreferredSizeWidget _getAppBar() {
+  AppBar _getAppBar() {
     return AppBar(
       title: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -66,7 +94,6 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      backgroundColor: kBlue,
     );
   }
 }
