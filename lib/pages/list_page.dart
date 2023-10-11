@@ -5,10 +5,12 @@ import 'package:fluttersimplon/app_bar.dart';
 abstract class ListPage extends StatelessWidget {
   const ListPage({Key? key}) : super(key: key);
 
+  ///Retourne le drawer si besoin
   Widget? getDrawer(BuildContext context) {
     return null;
   }
 
+  ///La liste des éléments
   FirestoreListView getListView();
 
   @override
