@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttersimplon/models/message.dart';
 import 'package:fluttersimplon/pages/list_page.dart';
 import 'package:fluttersimplon/services/messages_service.dart';
+import 'package:fluttersimplon/widgets/message_widget.dart';
 
 class MessagesPage extends ListPage {
   final String conversationId;
@@ -23,12 +24,7 @@ class MessagesPage extends ListPage {
       padding: const EdgeInsets.all(8.0),
       itemBuilder: (context, snapshot) {
         final message = snapshot.data();
-        return Column(
-          children: [
-            Text(message.text),
-            const Divider(),
-          ],
-        );
+        return MessageWidget(message: message);
       },
     );
   }

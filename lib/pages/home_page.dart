@@ -21,7 +21,7 @@ class HomePage extends ListPage {
   FirestoreListView getListView() {
     return FirestoreListView<Conversation>(
       query: ConversationsServices.getAll().orderBy(
-        'createdAt',
+        'lastMessageAt',
         descending: true,
       ),
       padding: const EdgeInsets.all(8.0),
@@ -43,7 +43,7 @@ class HomePage extends ListPage {
               },
               child: ListTile(
                 leading: const Icon(Icons.person),
-                title: Text(conversation.from),
+                title: Text(conversation.name),
                 trailing: const Icon(
                   Icons.arrow_right,
                   size: 40,

@@ -3,28 +3,28 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Conversation {
   Conversation({
     required this.id,
-    required this.from,
-    required this.to,
-    required this.createdAt,
+    required this.name,
+    required this.between,
+    required this.lastMessageAt,
   });
   Conversation.fromJson(String id, Map<String, Object?> json)
       : this(
           id: id,
-          from: json['from'].toString(),
-          to: json['to'].toString(),
-          createdAt: json['createdAt'] as Timestamp,
+          name: json['name'] as String,
+          between: List<String>.from(json['between'] as List),
+          lastMessageAt: json['lastMessageAt'] as Timestamp,
         );
 
   final String id;
-  final String from;
-  final String to;
-  final Timestamp createdAt;
+  final String name;
+  final List<String> between;
+  final Timestamp lastMessageAt;
 
   Map<String, Object?> toJson() {
     return {
-      'from': from,
-      'to': to,
-      'createdAt': createdAt,
+      'name': name,
+      'between': between,
+      'lastMessageAt': lastMessageAt,
     };
   }
 }

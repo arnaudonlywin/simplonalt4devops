@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider;
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:fluttersimplon/theme.dart';
+import 'package:jiffy/jiffy.dart';
 
 const firebaseConfig = {};
 
@@ -20,6 +21,7 @@ Future<void> main() async {
               messagingSenderId: "166030816604",
               appId: "1:166030816604:web:11f4bd8007ec12291efd99")
           : null);
+  await Jiffy.setLocale('fr');
   runApp(const MyApp());
 }
 

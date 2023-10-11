@@ -1,6 +1,6 @@
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttersimplon/app_bar.dart';
+import 'package:fluttersimplon/widgets/app_bar.dart';
 import 'package:fluttersimplon/colors.dart';
 
 ///Retourne le drawer de l'application
