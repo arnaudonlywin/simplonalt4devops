@@ -1,3 +1,4 @@
+// ignore: depend_on_referenced_packages
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttersimplon/models/message.dart';
@@ -12,13 +13,13 @@ class MessageWidget extends StatelessWidget {
   }) : super(key: key);
 
   ///Vérifie si le message a été écrit par nous
-  bool isMessageFromMe() {
+  bool _isMessageFromMe() {
     return FirebaseAuth.instance.currentUser!.email == message.from;
   }
 
   ///Retourne le padding qui va bien selon l'alignement du message
   EdgeInsets _getMessagePadding() {
-    if (isMessageFromMe()) {
+    if (_isMessageFromMe()) {
       return const EdgeInsets.only(left: 40, right: 15, top: 0, bottom: 10);
     } else {
       return const EdgeInsets.only(left: 15, right: 40, top: 0, bottom: 10);
@@ -27,7 +28,7 @@ class MessageWidget extends StatelessWidget {
 
   ///Retourne le borderRadius du message
   BorderRadius _getBorderRadius() {
-    if (isMessageFromMe()) {
+    if (_isMessageFromMe()) {
       return const BorderRadius.only(
         topLeft: Radius.circular(12),
         topRight: Radius.circular(12),
@@ -44,7 +45,7 @@ class MessageWidget extends StatelessWidget {
 
   ///Retourne les couleurs du message
   List<Color> _getColors() {
-    if (isMessageFromMe()) {
+    if (_isMessageFromMe()) {
       return ([
         Colors.blueAccent.withOpacity(0.7),
         Colors.blueAccent.withOpacity(0.3),
@@ -63,7 +64,7 @@ class MessageWidget extends StatelessWidget {
       padding: _getMessagePadding(),
       child: Align(
         alignment:
-            (isMessageFromMe()) ? Alignment.centerRight : Alignment.centerLeft,
+            (_isMessageFromMe()) ? Alignment.centerRight : Alignment.centerLeft,
         child: Container(
           decoration: BoxDecoration(
             borderRadius: _getBorderRadius(),
@@ -77,6 +78,11 @@ class MessageWidget extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              if (!_isMessageFromMe())
+                Text(
+                  message.from,
+                  style: const TextStyle(fontSize: 10),
+                ),
               Text(message.text),
               Align(
                 alignment: Alignment.bottomRight,

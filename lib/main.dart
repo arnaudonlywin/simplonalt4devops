@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttersimplon/pages/home_page.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+// ignore: depend_on_referenced_packages
 import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider;
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:fluttersimplon/theme.dart';

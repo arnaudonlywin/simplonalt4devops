@@ -10,13 +10,18 @@ abstract class ListPage extends StatelessWidget {
     return null;
   }
 
+  ///Le titre présent dans l'app bar
+  Widget? getTitle() {
+    return null;
+  }
+
   ///La liste des éléments
   FirestoreListView getListView();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: getAppBar(),
+      appBar: getAppBar(title: getTitle()),
       drawer: getDrawer(context),
       body: getListView(),
     );
