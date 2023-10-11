@@ -1,4 +1,3 @@
-import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttersimplon/widgets/app_bar.dart';
 
@@ -15,15 +14,15 @@ abstract class ListPage extends StatelessWidget {
     return null;
   }
 
-  ///La liste des éléments
-  FirestoreListView getListView();
+  ///Retourne le contenu de l'écran
+  Widget getBody();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: getAppBar(title: getTitle()),
       drawer: getDrawer(context),
-      body: getListView(),
+      body: getBody(),
     );
   }
 }

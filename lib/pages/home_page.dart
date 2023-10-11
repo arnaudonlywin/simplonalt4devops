@@ -20,7 +20,7 @@ class HomePage extends ListPage {
   }
 
   @override
-  FirestoreListView getListView() {
+  Widget getBody() {
     return FirestoreListView<Conversation>(
       query: ConversationsServices.getAll()
           .where(
