@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 // ignore: depend_on_referenced_packages
 import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider;
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
+import 'package:fluttersimplon/services/users_service.dart';
 import 'package:fluttersimplon/theme.dart';
 import 'package:jiffy/jiffy.dart';
 
@@ -44,6 +45,12 @@ class MyApp extends StatelessWidget {
             providers: [EmailAuthProvider()],
             actions: [
               AuthStateChangeAction<SignedIn>((context, state) {
+                //Ajoute ou met à jour l'utilisateur dans la base
+                UsersServices.set(
+                  state.user!.uid,
+                  state.user!.email!,
+                );
+                //Redirige vers la Home Page
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (_) => const HomePage()),

@@ -24,6 +24,11 @@ Widget getAppDrawer(BuildContext context) {
               MaterialPageRoute(
                 builder: (_) => ProfileScreen(
                   appBar: getAppBar(),
+                  actions: [
+                    SignedOutAction((context) {
+                      Navigator.of(context).pushReplacementNamed('/sign-in');
+                    }),
+                  ],
                 ),
               ),
             );
