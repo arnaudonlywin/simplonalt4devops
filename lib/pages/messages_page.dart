@@ -22,7 +22,7 @@ class MessagesPage extends ListPage {
   @override
   Widget getTitle() {
     return Text(
-      conversation.name,
+      conversation.displayName,
       style: appBarTitle,
     );
   }

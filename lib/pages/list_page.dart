@@ -17,12 +17,18 @@ abstract class ListPage extends StatelessWidget {
   ///Retourne le contenu de l'écran
   Widget getBody();
 
+  ///Le bouton en bas à droite
+  Widget? getFloatingActionButton(BuildContext context) {
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: getAppBar(title: getTitle()),
       drawer: getDrawer(context),
       body: getBody(),
+      floatingActionButton: getFloatingActionButton(context),
     );
   }
 }
