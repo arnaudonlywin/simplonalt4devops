@@ -61,24 +61,22 @@ class InputBottomAppBar extends StatefulWidget {
 }
 
 class _InputBottomAppBarState extends State<InputBottomAppBar> {
-  final textMessageController = TextEditingController();
+  final _textMessageController = TextEditingController();
 
   @override
   void dispose() {
-    textMessageController.dispose();
+    _textMessageController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
-      elevation: 10.0,
       surfaceTintColor: Colors.white,
       child: Container(
-        padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+        padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
         color: Colors.white,
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             //Bouton "+" pour ajouter du contenu au message
             GestureDetector(
@@ -102,13 +100,13 @@ class _InputBottomAppBarState extends State<InputBottomAppBar> {
             ),
             Expanded(
               child: TextField(
-                controller: textMessageController,
+                controller: _textMessageController,
                 decoration: InputDecoration(
                   contentPadding: const EdgeInsets.symmetric(
-                    vertical: 10,
-                    horizontal: 10,
+                    vertical: 5,
+                    horizontal: 5,
                   ),
-                  hintText: "Ecrire un message...",
+                  hintText: "Taper votre message...",
                   hintStyle: const TextStyle(color: kGrey),
                   border: OutlineInputBorder(
                     borderSide: BorderSide(
@@ -141,21 +139,14 @@ class _InputBottomAppBarState extends State<InputBottomAppBar> {
     );
   }
 
-  ///Envoi le message au destinataire
-  _sendMessage() {
-    String textMessage = textMessageController.text.trim();
+  ///Envoi le message
+  void _sendMessage() {
+    String textMessage = _textMessageController.text.trim();
     if (textMessage.isNotEmpty) {
-      /* MessagesService.sendMessage(
-        conversation: widget.conversation,
-        senderUserId: UserService.getCurrentUserID(),
-        textMessage: _textMessage,
-        fromProAccount: widget.isAppPro,
-        //On récupère le current establishment que si la conversation est entre 2 établissements
-        senderEstablishmentId: CurrentPro.establishment != null
-            ? CurrentPro.establishment!.id
-            : null,
+      /* MessagesService.add(
+        textMessage,
       ); */
     }
-    textMessageController.clear();
+    _textMessageController.clear();
   }
 }
