@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttersimplon/app_bar.dart';
 import 'package:fluttersimplon/colors.dart';
 
-Widget getDrawer(BuildContext context) {
+///Retourne le drawer de l'application
+Widget getAppDrawer(BuildContext context) {
   return Drawer(
     child: ListView(
       padding: EdgeInsets.zero,
