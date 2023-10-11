@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttersimplon/colors.dart';
@@ -7,6 +8,8 @@ import 'package:fluttersimplon/pages/list_page.dart';
 import 'package:fluttersimplon/services/messages_service.dart';
 import 'package:fluttersimplon/styles.dart';
 import 'package:fluttersimplon/widgets/message_widget.dart';
+// ignore: depend_on_referenced_packages
+import 'package:firebase_auth/firebase_auth.dart';
 
 class MessagesPage extends ListPage {
   final Conversation conversation;
@@ -143,10 +146,16 @@ class _InputBottomAppBarState extends State<InputBottomAppBar> {
   void _sendMessage() {
     String textMessage = _textMessageController.text.trim();
     if (textMessage.isNotEmpty) {
-      /* MessagesService.add(
-        textMessage,
-      ); */
+      //Créer le message
+      final message = Message(
+        text: textMessage,
+        from: FirebaseAuth.instance.currentUser!.email!,
+        createdAt: Timestamp.now(),
+      );
+      //Enregistre en base
+      MessagesServices.add(widget.conversation.id, message).then(
+        (_) => _textMessageController.clear(),
+      );
     }
-    _textMessageController.clear();
   }
 }

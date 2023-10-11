@@ -32,6 +32,13 @@ class HomePage extends ListPage {
             descending: true,
           ),
       padding: const EdgeInsets.all(8.0),
+      errorBuilder: (context, error, stackTrace) {
+        debugPrint((error.toString()));
+        return Text(error.toString());
+      },
+      emptyBuilder: (context) {
+        return const Text("Aucune conversation...");
+      },
       itemBuilder: (context, snapshot) {
         final conversation = snapshot.data();
         return Column(
