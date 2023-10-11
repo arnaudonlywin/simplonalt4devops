@@ -1,9 +1,10 @@
-import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttersimplon/app_bar.dart';
 import 'package:fluttersimplon/colors.dart';
+import 'package:fluttersimplon/drawer.dart';
 import 'package:fluttersimplon/models/conversation.dart';
+import 'package:fluttersimplon/pages/messages_page.dart';
 import 'package:fluttersimplon/services/conversations_service.dart';
-import 'package:fluttersimplon/styles.dart';
 import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
 
 class HomePage extends StatefulWidget {
@@ -20,34 +21,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _getAppBar(),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: kGrey,
-              ),
-              child: Text('Bienvenue !'),
-            ),
-            ListTile(
-              title: const Text('Compte'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => ProfileScreen(
-                      appBar: _getAppBar(),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ],
-        ),
-      ),
+      appBar: getAppBar(),
+      drawer: getDrawer(context),
       body: FirestoreListView<Conversation>(
         query: ConversationsServices.getAll().orderBy(
           'createdAt',
@@ -60,7 +35,16 @@ class _HomePageState extends State<HomePage> {
             children: [
               InkWell(
                 splashColor: kGrey,
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => MessagesPage(
+                        conversationId: conversation.id,
+                      ),
+                    ),
+                  );
+                },
                 child: ListTile(
                   leading: const Icon(Icons.person),
                   title: Text(conversation.from),
@@ -74,25 +58,6 @@ class _HomePageState extends State<HomePage> {
             ],
           );
         },
-      ),
-    );
-  }
-
-  ///Retourne l'app bar de mon application
-  AppBar _getAppBar() {
-    return AppBar(
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(right: 5),
-            child: Image.asset("assets/logo.png"),
-          ),
-          const Text(
-            "Messagerie Simplon",
-            style: appBarTitle,
-          ),
-        ],
       ),
     );
   }

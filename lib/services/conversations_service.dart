@@ -6,7 +6,8 @@ class ConversationsServices {
     final collectionRef =
         FirebaseFirestore.instance.collection('conversations');
     return collectionRef.withConverter<Conversation>(
-      fromFirestore: (snapshot, _) => Conversation.fromJson(snapshot.data()!),
+      fromFirestore: (snapshot, _) =>
+          Conversation.fromJson(snapshot.id, snapshot.data()!),
       toFirestore: (conversation, _) => conversation.toJson(),
     );
   }
