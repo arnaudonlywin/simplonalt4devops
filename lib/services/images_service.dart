@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ImagesService {
@@ -14,6 +15,9 @@ class ImagesService {
     return imageRef.putFile(file).then((_) {
       //Récupère sa download URL
       return imageRef.getDownloadURL();
+    }, onError: (error) {
+      debugPrint(error);
+      return;
     });
   }
 }
