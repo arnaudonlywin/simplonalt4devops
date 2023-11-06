@@ -4,12 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttersimplon/colors.dart';
 import 'package:fluttersimplon/models/conversation.dart';
+import 'package:fluttersimplon/models/image_message.dart';
 import 'package:fluttersimplon/models/message.dart';
 import 'package:fluttersimplon/models/text_message.dart';
 import 'package:fluttersimplon/pages/list_page.dart';
+import 'package:fluttersimplon/services/images_service.dart';
 import 'package:fluttersimplon/services/messages_service.dart';
 import 'package:fluttersimplon/styles.dart';
-import 'package:fluttersimplon/widgets/message_widget.dart';
+import 'package:fluttersimplon/widgets/image_message_widget.dart';
+import 'package:fluttersimplon/widgets/text_message_widget.dart';
 // ignore: depend_on_referenced_packages
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
@@ -46,8 +49,13 @@ class MessagesPage extends ListPage {
             padding: const EdgeInsets.all(8.0),
             itemBuilder: (context, snapshot) {
               final message = snapshot.data();
-              //TODO Afficher l'image si ce n'est pas un TextMessage
-              return TextMessageWidget(message: (message as TextMessage));
+              if (message is TextMessage) {
+                return TextMessageWidget(message: message);
+              }
+              if (message is ImageMessage && message.imageUrl != null) {
+                return ImageMessageWidget(message: message);
+              }
+              return const SizedBox();
             },
           ),
         ),
@@ -152,13 +160,34 @@ class _InputBottomAppBarState extends State<InputBottomAppBar> {
   void _addImage() async {
     try {
       final ImagePicker picker = ImagePicker();
-      final List<XFile> images = await picker.pickMultiImage();
-      //Si la liste est vide, on en reste là
-      if (images.isEmpty) {
-        debugPrint("Aucune photo sélectionnée");
+      final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+      //Si on n'a pas chargé d'image, on en reste là
+      if (image == null) {
+        debugPrint("Pas de photo sélectionnée");
         return;
       }
-      //TODO On upload les fichiers sur Firebase storage
+      //On upload les fichiers sur Firebase storage
+      debugPrint(image.path);
+      //Pour l'instant on laisse l'URL de l'image à null
+      ImageMessage message = ImageMessage(
+        imageUrl: null,
+        from: FirebaseAuth.instance.currentUser!.email!,
+        createdAt: Timestamp.now(),
+      );
+      //Créé le message et récupère son id
+      final messageId = await MessagesServices.add(
+        widget.conversation.id,
+        message,
+      );
+      //Upload la photo et retourne son URL
+      final downloadUrl = await ImagesService.upload(messageId, image);
+      message.imageUrl = downloadUrl;
+      //Met à jour le message avec l'URL de l'image
+      await MessagesServices.update(
+        widget.conversation.id,
+        messageId,
+        message,
+      );
     } on PlatformException catch (e) {
       String errorText;
       switch (e.code) {

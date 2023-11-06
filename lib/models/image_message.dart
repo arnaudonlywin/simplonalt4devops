@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttersimplon/models/message.dart';
 
 class ImageMessage extends Message {
-  final String imageUrl;
+  String? imageUrl;
 
   // ignore: use_super_parameters
   ImageMessage({
@@ -13,7 +13,8 @@ class ImageMessage extends Message {
 
   ImageMessage.fromJson(Map<String, Object?> json)
       : this(
-          imageUrl: json['imageUrl'].toString(),
+          imageUrl:
+              json.containsKey('imageUrl') ? json['imageUrl'].toString() : null,
           from: json['from'].toString(),
           createdAt: json['createdAt'] as Timestamp,
         );

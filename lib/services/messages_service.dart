@@ -29,17 +29,42 @@ class MessagesServices {
   }
 
   ///Ajoute un message à une conversation
-  static Future add(String conversationId, Message message) async {
+  static Future<String> add(String conversationId, Message message) async {
     //Ajoute le message
     final collectionRef = FirebaseFirestore.instance
         .collection('conversations')
         .doc(conversationId)
         .collection('messages');
-    await collectionRef.add(message.toJson());
+    final docRef = await collectionRef.add(message.toJson());
     //Met à jour la date/heure du dernier message envoyé dans la conversation
-    return ConversationsServices.updateLastMessageAt(
+    await ConversationsServices.updateLastMessageAt(
       conversationId,
       message.createdAt,
     );
+    return docRef.id;
+  }
+
+  ///Met à jour un message dans une conversation
+  static Future<String> update(
+    String conversationId,
+    String messageId,
+    Message message,
+  ) async {
+    //Ajoute le message
+    final docRef = FirebaseFirestore.instance
+        .collection('conversations')
+        .doc(conversationId)
+        .collection('messages')
+        .doc(messageId);
+    await docRef.set(
+      message.toJson(),
+      SetOptions(merge: true),
+    );
+    //Met à jour la date/heure du dernier message envoyé dans la conversation
+    await ConversationsServices.updateLastMessageAt(
+      conversationId,
+      message.createdAt,
+    );
+    return docRef.id;
   }
 }

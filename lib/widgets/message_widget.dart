@@ -1,13 +1,13 @@
 // ignore: depend_on_referenced_packages
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttersimplon/models/text_message.dart';
+import 'package:fluttersimplon/models/message.dart';
 import 'package:jiffy/jiffy.dart';
 
-class TextMessageWidget extends StatelessWidget {
-  final TextMessage message;
+abstract class MessageWidget extends StatelessWidget {
+  final Message message;
 
-  const TextMessageWidget({
+  const MessageWidget({
     super.key,
     required this.message,
   });
@@ -58,6 +58,9 @@ class TextMessageWidget extends StatelessWidget {
     }
   }
 
+  ///Affiche le contenu du message
+  Widget getBody();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -83,7 +86,7 @@ class TextMessageWidget extends StatelessWidget {
                   message.from,
                   style: const TextStyle(fontSize: 10),
                 ),
-              Text(message.text),
+              getBody(),
               Align(
                 alignment: Alignment.bottomRight,
                 child: Text(
