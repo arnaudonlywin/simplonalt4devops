@@ -11,8 +11,9 @@ class ImagesService {
     final imageRef = storageRef.child("images/$messageId/image.jpg");
     final file = File(image.path);
     //Uploade l'image
-    await imageRef.putFile(file);
-    //Récupère sa download URL
-    return imageRef.getDownloadURL();
+    return imageRef.putFile(file).then((_) {
+      //Récupère sa download URL
+      return imageRef.getDownloadURL();
+    });
   }
 }
