@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fluttersimplon/models/image_message.dart';
 import 'package:fluttersimplon/models/message.dart';
+import 'package:fluttersimplon/models/text_message.dart';
 import 'package:fluttersimplon/services/conversations_service.dart';
 
 class MessagesServices {
@@ -10,8 +12,19 @@ class MessagesServices {
         .doc(conversationId)
         .collection('messages');
     return collectionRef.withConverter<Message>(
-      fromFirestore: (snapshot, _) => Message.fromJson(snapshot.data()!),
-      toFirestore: (message, _) => message.toJson(),
+      fromFirestore: (snapshot, _) {
+        final data = snapshot.data()!;
+        if (!data.containsKey('text')) {
+          return ImageMessage.fromJson(snapshot.data()!);
+        }
+        return TextMessage.fromJson(snapshot.data()!);
+      },
+      toFirestore: (message, _) {
+        if (message is ImageMessage) {
+          return message.toJson();
+        }
+        return (message as TextMessage).toJson();
+      },
     );
   }
 

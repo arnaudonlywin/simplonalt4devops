@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:fluttersimplon/colors.dart';
 import 'package:fluttersimplon/models/conversation.dart';
 import 'package:fluttersimplon/models/message.dart';
+import 'package:fluttersimplon/models/text_message.dart';
 import 'package:fluttersimplon/pages/list_page.dart';
 import 'package:fluttersimplon/services/messages_service.dart';
 import 'package:fluttersimplon/styles.dart';
@@ -19,9 +20,9 @@ class MessagesPage extends ListPage {
   final Conversation conversation;
 
   const MessagesPage({
-    Key? key,
+    super.key,
     required this.conversation,
-  }) : super(key: key);
+  });
 
   @override
   Widget getTitle() {
@@ -45,7 +46,8 @@ class MessagesPage extends ListPage {
             padding: const EdgeInsets.all(8.0),
             itemBuilder: (context, snapshot) {
               final message = snapshot.data();
-              return MessageWidget(message: message);
+              //TODO Afficher l'image si ce n'est pas un TextMessage
+              return TextMessageWidget(message: (message as TextMessage));
             },
           ),
         ),
@@ -59,9 +61,9 @@ class InputBottomAppBar extends StatefulWidget {
   final Conversation conversation;
 
   const InputBottomAppBar({
-    Key? key,
+    super.key,
     required this.conversation,
-  }) : super(key: key);
+  });
 
   @override
   State<InputBottomAppBar> createState() => _InputBottomAppBarState();
@@ -156,6 +158,7 @@ class _InputBottomAppBarState extends State<InputBottomAppBar> {
         debugPrint("Aucune photo sélectionnée");
         return;
       }
+      //TODO On upload les fichiers sur Firebase storage
     } on PlatformException catch (e) {
       String errorText;
       switch (e.code) {
@@ -181,7 +184,7 @@ class _InputBottomAppBarState extends State<InputBottomAppBar> {
     String textMessage = _textMessageController.text.trim();
     if (textMessage.isNotEmpty) {
       //Créer le message
-      final message = Message(
+      final message = TextMessage(
         text: textMessage,
         from: FirebaseAuth.instance.currentUser!.email!,
         createdAt: Timestamp.now(),

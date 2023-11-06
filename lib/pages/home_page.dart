@@ -13,7 +13,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 class HomePage extends ListPage {
   static String name = "/home";
 
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   Widget? getDrawer(BuildContext context) {

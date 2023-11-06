@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttersimplon/widgets/app_bar.dart';
 
 abstract class ListPage extends StatelessWidget {
-  const ListPage({Key? key}) : super(key: key);
+  const ListPage({super.key});
 
   ///Retourne le drawer si besoin
   Widget? getDrawer(BuildContext context) {

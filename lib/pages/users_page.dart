@@ -11,7 +11,7 @@ import 'package:fluttersimplon/styles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class UsersPage extends ListPage {
-  const UsersPage({Key? key}) : super(key: key);
+  const UsersPage({super.key});
 
   @override
   Widget getTitle() {
