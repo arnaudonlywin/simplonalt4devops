@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttersimplon/colors.dart';
 import 'package:fluttersimplon/models/conversation.dart';
 import 'package:fluttersimplon/models/message.dart';
@@ -10,6 +11,9 @@ import 'package:fluttersimplon/styles.dart';
 import 'package:fluttersimplon/widgets/message_widget.dart';
 // ignore: depend_on_referenced_packages
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 class MessagesPage extends ListPage {
   final Conversation conversation;
@@ -83,7 +87,7 @@ class _InputBottomAppBarState extends State<InputBottomAppBar> {
           children: [
             //Bouton "+" pour ajouter du contenu au message
             GestureDetector(
-              onTap: () {},
+              onTap: _addImage,
               child: Container(
                 height: 30,
                 width: 30,
@@ -140,6 +144,36 @@ class _InputBottomAppBarState extends State<InputBottomAppBar> {
         ),
       ),
     );
+  }
+
+  ///Ajoute une image à la conversation
+  void _addImage() async {
+    try {
+      final ImagePicker picker = ImagePicker();
+      final List<XFile> images = await picker.pickMultiImage();
+      //Si la liste est vide, on en reste là
+      if (images.isEmpty) {
+        debugPrint("Aucune photo sélectionnée");
+        return;
+      }
+    } on PlatformException catch (e) {
+      String errorText;
+      switch (e.code) {
+        case 'photo_access_denied':
+          errorText = "Veuillez autoriser l'application à accéder à vos photos";
+          break;
+        default:
+          errorText = "Impossible d'accéder à vos photos";
+      }
+      if (context.mounted) {
+        showTopSnackBar(
+          Overlay.of(context),
+          CustomSnackBar.error(
+            message: errorText,
+          ),
+        );
+      }
+    }
   }
 
   ///Envoi le message

@@ -39,6 +39,8 @@ dependencies:
   firebase_ui_firestore: ^1.5.11
   firebase_ui_auth: ^1.8.0
   jiffy: ^6.2.1
+  image_picker: ^1.0.4
+  top_snackbar_flutter: ^3.1.0
 
 dev_dependencies:
   flutter_test:
