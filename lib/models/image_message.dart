@@ -13,8 +13,9 @@ class ImageMessage extends Message {
 
   ImageMessage.fromJson(Map<String, Object?> json)
       : this(
-          imageUrl:
-              json.containsKey('imageUrl') ? json['imageUrl'].toString() : null,
+          imageUrl: json.containsKey('imageUrl') && json['imageUrl'] != null
+              ? json['imageUrl'].toString()
+              : null,
           from: json['from'].toString(),
           createdAt: json['createdAt'] as Timestamp,
         );

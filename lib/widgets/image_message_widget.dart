@@ -17,6 +17,9 @@ class ImageMessageWidget extends MessageWidget {
 
   @override
   Widget getBody() {
-    return Image.network((message as ImageMessage).imageUrl!);
+    if ((message as ImageMessage).imageUrl != null) {
+      return Image.network((message as ImageMessage).imageUrl!);
+    }
+    return const SizedBox();
   }
 }
