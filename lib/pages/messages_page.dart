@@ -167,7 +167,6 @@ class _InputBottomAppBarState extends State<InputBottomAppBar> {
         return;
       }
       //On upload les fichiers sur Firebase storage
-      debugPrint(image.path);
       //Pour l'instant on laisse l'URL de l'image à null
       ImageMessage message = ImageMessage(
         imageUrl: null,
