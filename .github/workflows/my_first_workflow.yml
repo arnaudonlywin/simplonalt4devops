@@ -43,8 +43,8 @@ jobs:
       - name: Build app for web
         run: flutter build web
 
-      - name: Build app for iOS
-        run: flutter build ios --release --no-codesign
+      # - name: Build app for iOS
+      #   run: flutter build ios --release --no-codesign
 
-      - name: Build app for Android
-        run: flutter build appbundle
+      # - name: Build app for Android
+      #   run: flutter build appbundle
